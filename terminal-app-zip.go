@@ -18,27 +18,33 @@ const (
 )
 
 var (
-	rootPath  string
-	FinalPath string
+	rootPath        string
+	FinalPath       string
+	errNotInstalled error
 )
 
 func supportedOS() bool {
 	if runtime.GOOS == "darwin" {
 		return true
-	} else {
-		log.Print("OS does not support terminal-notifier")
-		return false
 	}
+
+	log.Print("OS does not support terminal-notifier")
+	return false
 }
 
 func init() {
 	if supportedOS() {
 		err := installTerminalNotifier()
 		if err != nil {
-			log.Fatalf("Could not install Terminal Notifier to a temp directory: %s", err)
-		} else {
-			FinalPath = filepath.Join(rootPath, executablePath)
+			errNotInstalled = fmt.Errorf(
+				"Could not install Terminal Notifier to a temp directory: %s",
+				err,
+			)
+
+			return
 		}
+
+		FinalPath = filepath.Join(rootPath, executablePath)
 	}
 }
 
