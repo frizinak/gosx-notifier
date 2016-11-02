@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/deckarep/gosx-notifier"
+	"github.com/frizinak/gosx-notifier"
 )
 
 func main() {
